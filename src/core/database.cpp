@@ -10,9 +10,29 @@
 #include <QDebug>
 #include <QStringList>
 
+
+Database::~Database()
+{
+    
+}
+
 Database::Database(QQuickItem *parent)
     : QQuickItem(parent)
 {
+    if ( database.database(name).isValid() == false ) {
+        database = QSqlDatabase::addDatabase("QSQLITE", name);
+    } else {
+        database = QSqlDatabase::database(name);
+    }
+
+    database.setConnectOptions("QSQLITE_ENABLE_SHARED_CACHE = 1;");
+    database.setDatabaseName("/var/lib/harbour-dolphin-keyboard/database/" + name + ".sqlite");
+
+    database.open();
+
+    QSqlQuery query(database);
+
+    query.exec("PRAGMA synchronous = OFF; PRAGMA journal_mode = OFF; PRAGMA default_cache_size =32768; PRAGMA foreign_keys = OFF; PRAGMA count_changes = OFF; PRAGMA temp_store = qvectorMEMORY");
 
 }
 

@@ -21,6 +21,7 @@ class Database : public QQuickItem
         void index(QString name);
 
     public:
+        QString name;
         Q_INVOKABLE QStringList load(QString sql);
         Q_INVOKABLE QStringList cangJie(int type, QString keys, QString size);
         Q_INVOKABLE QStringList wubi(int type, QString keys, QString size);
